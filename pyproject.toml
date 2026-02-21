@@ -1,7 +1,7 @@
 [project]
-name = "YA_MCPServer_Template"
+name = "YA_MCPServer_Yolo"
 version = "0.1.0"
-description = "YA MCP Server Template"
+description = "A YOLO-based Object Detection MCP Server"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -12,4 +12,14 @@ dependencies = [
     "mcp[cli]>=1.14.0",
     "pyyaml>=6.0.2",
     "ruff>=0.14.4",
+
+    # yolo
+    "torch",
+    "torchvision",
+    "opencv-python",
+    "ultralytics",
+    "pandas",
+    "requests",
+    "types-pyyaml",
+    "types-requests",
 ]

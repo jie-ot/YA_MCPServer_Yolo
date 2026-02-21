@@ -1,9 +1,9 @@
 server: # 服务器元数据
-  name: YA_MCPServer_Template
-  name_zh: YA MCP 服务器示例
+  name: YA_MCPServer_Yolo
+  name_zh: YA Yolo 检测服务
   author: YA Project
-  description: A simple hello mcp example for MCP Tool.
-  description_zh: MCP Tool 的一个简单示例。
+  description: A YOLO-based Object Detection MCP Server
+  description_zh: 基于 YOLO 的目标检测 MCP 服务器
   version: 0.1.0
 
 transport: # 服务器启动方式配置
@@ -22,3 +22,9 @@ logging: # 日志配置
     rotation: "10 MB"
     retention: "7 days"
     compression: "zip"
+
+yolo: # YOLO配置
+  v5_path: "models/yolov5s.pt"
+  v8_path: "models/yolov8n.pt"
+  conf_thres: 0.25
+  iou_thres: 0.45

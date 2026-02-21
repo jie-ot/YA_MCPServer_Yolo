@@ -1,4 +1,4 @@
-## YA_MCPServer_Template
+## YA_MCPServer_Yolo
 
 [一句话功能简介]
 
