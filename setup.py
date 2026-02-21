@@ -19,7 +19,6 @@ def setup():
         dirs = [
             os.path.join(base_dir, "assets", "input"),
             os.path.join(base_dir, "assets", "output"),
-            os.path.join(base_dir, "assets", "logs"),
             os.path.join(base_dir, "models"),
         ]
         

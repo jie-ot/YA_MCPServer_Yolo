@@ -9,3 +9,8 @@
 /**/wheels/
 /**/*.egg-info
 /**/.vscode
+
+assets/input/*
+!assets/input/.gitkeep
+assets/output/*
+!assets/output/.gitkeep
