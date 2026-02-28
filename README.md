@@ -41,12 +41,12 @@
 
 - `core`: 核心业务逻辑层。
   - `inference.py`: 封装了 `YoloEngine` 单例类，负责 YOLO 模型的异步加载与推理，统一数据输出格式。
-  - `utils.py`: 图像处理工具，负责解析坐标数据并在原图上绘制边界框 (Bounding Box) 及保存结果。
+  - `utils.py`: 图像处理工具，负责解析坐标数据并在原图上绘制边界框及保存结果。
   - `yolov5/`: 克隆的 YOLOv5 官方仓库，作为本地依赖供引擎调用。
 - `tools`: MCP Tool 实现层，定义了供大模型调用的工具接口（如 `detect_image`）。
 - `resources`: MCP Resource 实现层，暴露本地检测历史和模型状态供大模型读取。
 - `prompts`: MCP Prompt 实现层，定义了将检测数据转化为自然语言分析报告的模板。
-- `assets`: 运行时资源目录。包含 `input/` (用户上传图片)、`output/` (画框后的结果图) 和 `logs/` (运行日志)。
+- `assets`: 运行时资源目录。包含 `input/` (用户上传图片)、`output/` (画框后的结果图) 。
 - `models`: 模型权重仓库，存放 `yolov5s.pt` 和 `yolov8n.pt` 文件。
 - `config.yaml`: 配置文件，添加了 YOLO 模型的本地路径、默认置信度阈值 (`conf_thres`) 以及可视化输出的相关配置。
 - `setup.py`: 环境初始化脚本，用于自动创建必要的目录结构并从远程下载缺失的模型权重文件。
