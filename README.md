@@ -1,12 +1,12 @@
 ## YA_MCPServer_Yolo
 
-基于 MCP 协议的 YOLO 目标检测智能体服务器，支持 YOLOv5 与 YOLOv8 双引擎，提供图像检测、结果分析与可视化功能。
+基于 MCP 协议的 YOLO 目标检测智能体，支持 YOLOv5 与 YOLOv8 双引擎，提供图像检测、结果分析与可视化功能。
 
 ### 组员信息
 
 | 姓名 | 学号 | 分工 |
 | :--: | :--: | :--: |
-| 赵冠杰 | U202414739 | 核心算法与环境配置 (Core & Setup) |
+| 赵冠杰 | U202414739 | 核心算法与环境配置 (Core & Setup), PPT制作, 项目管理 |
 | 王子舜 | U202414921 | MCP 协议实现 (Tools, Resources, Prompts) |
 | 陈思宇 | U202414897 | 客户端交互与可视化 (Notebook & Utils) |
 
@@ -23,10 +23,10 @@
 
 | 资源名称 | 功能描述 | 输入 | 输出 | 备注 |
 | :------: | :------: | :--: | :--: | :--: |
-| `yolo://history/list` | 返回最近检测的图片列表 | 无 | `List[Dict]` (包含文件名、路径、时间、大小的列表) | 默认返回最近10条 |
-| `yolo://models/info` | 返回可用 YOLO 模型的信息 | 无 | `Dict` (模型路径、描述及可用状态) | |
-| `yolo://stats/summary` | 返回检测统计摘要 | 无 | `Dict` (统计数据) | |
-| `yolo://history/{filename}` | 返回指定检测结果图片的信息 | `filename` (文件名) | `Dict` (单张图片的详细信息) | |
+| `detection_history` | 返回最近检测的图片列表 | 无 | `List[Dict]` (包含文件名、路径、时间、大小的列表) | 默认返回最近10条 |
+| `model_info` | 返回可用 YOLO 模型的信息 | 无 | `Dict` (模型路径、描述及可用状态) | |
+| `detection_stats` | 返回检测统计摘要 | 无 | `Dict` (统计数据) | |
+| `get_detection_result` | 返回指定检测结果图片的信息 | `filename` (文件名) | `Dict` (单张图片的详细信息) | |
 
 ### Prompts 列表
 
