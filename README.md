@@ -1,12 +1,12 @@
 ## YA_MCPServer_Yolo
 
-基于 MCP 协议的 YOLO 目标检测智能体服务器，支持 YOLOv5 与 YOLOv8 双引擎，提供图像检测、结果分析与可视化功能。
+基于 MCP 协议的 YOLO 目标检测智能体，支持 YOLOv5 与 YOLOv8 双引擎，提供图像检测、结果分析与可视化功能。
 
 ### 组员信息
 
 | 姓名 | 学号 | 分工 |
 | :--: | :--: | :--: |
-| 赵冠杰 | U202414739 | 核心算法与环境配置 (Core & Setup) |
+| 赵冠杰 | U202414739 | 核心算法与环境配置 (Core & Setup), PPT制作, 项目管理 |
 | 王子舜 | U202414921 | MCP 协议实现 (Tools, Resources, Prompts) |
 | 陈思宇 | U202414897 | 客户端交互与可视化 (Notebook & Utils) |
 
