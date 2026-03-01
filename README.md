@@ -50,6 +50,35 @@
 - `models`: 模型权重仓库，存放 `yolov5s.pt` 和 `yolov8n.pt` 文件。
 - `config.yaml`: 配置文件，添加了 YOLO 模型的本地路径、默认置信度阈值 (`conf_thres`) 以及可视化输出的相关配置。
 - `setup.py`: 环境初始化脚本，用于自动创建必要的目录结构并从远程下载缺失的模型权重文件。
+- `User_Interface.ipynb`: 利用jupyter notebook提供交互界面
+
+### 项目特色
+- 基于 Jupyter Notebook 实现可视化交互界面（`User_Interface.ipynb`），提供简洁直观的图形化操作入口，无需编写代码即可完成目标检测全流程。
+
+### 使用教程
+
+#### 1. 安装 VS Code 插件
+在扩展中安装微软的 **Jupyter** 插件。
+
+#### 2. 安装 Notebook 运行依赖
+创建虚拟环境并安装 `pyproject.toml` 中的依赖：
+```bash
+uv sync
+```
+
+#### 3. 打开并运行 Notebook
+- 打开 `User_Interface.ipynb`  
+- 点击右上角 **Select Kernel（选择内核）**  
+- 选择 **Python Environments（Python 环境）**  
+- 选择带有 `('.venv': venv)` 标志的 Python 解释器  
+- 点击顶部 **Run All（全部运行）**
+
+#### 4. 开始交互
+- 运行成功后，代码块最下方会出现交互界面  
+- 点击 🖼 **上传图片** 按钮，选择电脑中的照片  
+- 在下拉框选择 **v5 或 v8**  
+- 点击 ▶️ **执行检测**
+
 
 ### 其他需要说明的情况
 

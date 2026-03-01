@@ -40,5 +40,7 @@ dependencies = [
     "gitpython>=3.1.30", 
     "packaging", 
     "setuptools>=70.0.0", 
-    "urllib3>=2.6.0 ; python_version > '3.8'"
+    "urllib3>=2.6.0 ; python_version > '3.8'",
+    "ipykernel",
+    "ipywidgets",
 ]
