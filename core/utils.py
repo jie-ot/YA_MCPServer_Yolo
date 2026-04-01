@@ -4,6 +4,52 @@ import os
 import numpy as np
 from datetime import datetime
 
+
+def _get_class_color(label: str):
+    """根据类别名生成稳定且区分度较高的颜色（BGR）。"""
+    palette = [
+        (56, 56, 255),
+        (151, 157, 255),
+        (31, 112, 255),
+        (29, 178, 255),
+        (49, 210, 207),
+        (10, 249, 72),
+        (23, 204, 146),
+        (134, 219, 61),
+        (52, 147, 26),
+        (187, 212, 0),
+        (168, 153, 44),
+        (255, 194, 0),
+        (147, 69, 52),
+        (255, 115, 100),
+        (236, 24, 0),
+        (255, 56, 132),
+        (133, 0, 82),
+        (255, 56, 203),
+        (200, 149, 255),
+        (199, 55, 255),
+    ]
+    color_index = sum(ord(ch) for ch in str(label)) % len(palette)
+    return palette[color_index]
+
+
+def _get_draw_style(image_shape):
+    """根据图片尺寸动态计算框线、字体、边距等绘制参数。"""
+    height, width = image_shape[:2]
+    scale_base = max(height, width)
+    line_thickness = max(2, int(round(scale_base / 500)))
+    font_scale = max(0.6, scale_base / 1200)
+    font_thickness = max(1, line_thickness - 1)
+    padding = max(4, line_thickness + 2)
+    return line_thickness, font_scale, font_thickness, padding
+
+
+def _get_text_color(background_color):
+    """根据背景色亮度选择黑/白文字，提升可读性。"""
+    b, g, r = background_color
+    brightness = 0.114 * b + 0.587 * g + 0.299 * r
+    return (0, 0, 0) if brightness > 160 else (255, 255, 255)
+
 def draw_boxes(image_path, detect_result):
     """
     为图片绘制检测框（核心函数）
@@ -35,6 +81,8 @@ def draw_boxes(image_path, detect_result):
         print("ℹ️ 无检测结果，返回原图")
         return img
 
+    line_thickness, font_scale, font_thickness, padding = _get_draw_style(img.shape)
+
     # 3. 遍历检测结果绘制框和标签
     for idx, item in enumerate(detections):
         # 提取基础信息
@@ -48,24 +96,46 @@ def draw_boxes(image_path, detect_result):
         x2 = int(bbox.get("x2", bbox.get("xmax", 0)))
         y2 = int(bbox.get("y2", bbox.get("ymax", 0)))
 
+        # 坐标裁剪到图像范围内，避免越界
+        x1 = max(0, min(x1, img.shape[1] - 1))
+        y1 = max(0, min(y1, img.shape[0] - 1))
+        x2 = max(0, min(x2, img.shape[1] - 1))
+        y2 = max(0, min(y2, img.shape[0] - 1))
+
         # 过滤无效坐标（避免绘制错误）
-        if x1 >= x2 or y1 >= y2 or x1 < 0 or y1 < 0 or x2 > img.shape[1] or y2 > img.shape[0]:
+        if x1 >= x2 or y1 >= y2:
             print(f"⚠️ 跳过无效坐标：目标{idx+1} → x1={x1}, y1={y1}, x2={x2}, y2={y2}")
             continue
 
-        # 4. 绘制检测框（绿色，线宽2，醒目且不刺眼）
-        cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        box_color = _get_class_color(label)
+        text_color = _get_text_color(box_color)
 
-        # 5. 绘制标签背景（半透明绿色，提升文字可读性）
-        label_text = f"{label} {conf:.2f}"
-        # 计算文字尺寸
-        (text_width, text_height), baseline = cv2.getTextSize(label_text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
-        # 绘制背景矩形
+        # 4. 绘制检测框（按类别区分颜色，线宽随图片尺寸自适应）
+        cv2.rectangle(img, (x1, y1), (x2, y2), box_color, line_thickness, lineType=cv2.LINE_AA)
+
+        # 5. 绘制标签背景和文字（显示类别名 + 两位小数置信度）
+        label_text = f"{label} {float(conf):.2f}"
+        (text_width, text_height), baseline = cv2.getTextSize(
+            label_text,
+            cv2.FONT_HERSHEY_SIMPLEX,
+            font_scale,
+            font_thickness,
+        )
+
+        text_box_top = y1 - text_height - baseline - padding * 2
+        if text_box_top < 0:
+            text_box_top = y1
+            text_box_bottom = min(img.shape[0] - 1, y1 + text_height + baseline + padding * 2)
+            text_y = text_box_bottom - baseline - padding
+        else:
+            text_box_bottom = y1
+            text_y = y1 - baseline - padding
+
         cv2.rectangle(
             img,
-            (x1, y1 - text_height - 10),  # 左上角
-            (x1 + text_width + 10, y1),    # 右下角
-            (0, 255, 0),
+            (x1, text_box_top),
+            (min(img.shape[1] - 1, x1 + text_width + padding * 2), text_box_bottom),
+            box_color,
             -1  # 填充背景
         )
 
@@ -73,11 +143,12 @@ def draw_boxes(image_path, detect_result):
         cv2.putText(
             img,
             label_text,
-            (x1 + 5, y1 - 5),  # 文字起始位置
+            (x1 + padding, text_y),
             cv2.FONT_HERSHEY_SIMPLEX,
-            0.5,               # 字体大小
-            (255, 255, 255),   # 文字颜色（白色）
-            1                  # 文字线宽
+            font_scale,
+            text_color,
+            font_thickness,
+            lineType=cv2.LINE_AA,
         )
 
     print(f"✅ 绘图完成：共绘制{len(detections)}个有效检测框")
